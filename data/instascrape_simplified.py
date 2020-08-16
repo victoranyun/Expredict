@@ -59,6 +59,7 @@ for i, username in enumerate(usernames):
     print(media_links)
 
     finalResults = pd.DataFrame()
+    arr = []
     for j in range(len(media_links)):
         try:
             media_source = urlopen(media_links[j]).read()  # fetching page
@@ -75,14 +76,20 @@ for i, username in enumerate(usernames):
             posts = posts.get('shortcode_media')
             actual_display_url = posts.get('display_url').replace('\u0026', '&')
 
-            dictPosts = {}
-            if not posts.get('is_video'):
-                dictPosts = {'owner_username': posts.get('owner').get('username'), 'shortcode': posts.get('shortcode'),
-                             'dimensions': posts.get('dimensions'), 'display_url': actual_display_url,
-                             'likes_count': posts.get('edge_media_preview_like').get('count'),
-                             'comments_count': posts.get('edge_media_preview_comment').get('count')}
+            dict_posts = {}
 
-            p = pd.DataFrame.from_dict(pd.json_normalize(dictPosts), orient='columns')
+            if not posts.get('is_video'):
+                dict_posts = {'owner_username': posts.get('owner').get('username'), 'shortcode': posts.get('shortcode'),
+                              'dimensions': posts.get('dimensions'), 'display_url': actual_display_url,
+                              'likes_count': posts.get('edge_media_preview_like').get('count'),
+                              'comments_count': posts.get('edge_media_preview_comment').get('count')}
+
+                shortcode_display_url_and_likes = {'shortcode': posts.get('shortcode'),
+                                                   'display_url': actual_display_url,
+                                                   'likes_count': posts.get('edge_media_preview_like').get('count')}
+                arr.append(shortcode_display_url_and_likes)
+                json_posts = {posts.get('owner').get('username'): arr}
+            p = pd.DataFrame.from_dict(pd.json_normalize(dict_posts), orient='columns')
             finalResults = finalResults.append(p)
         except TypeError:
             np.nan
@@ -91,3 +98,7 @@ for i, username in enumerate(usernames):
     finalResults.index = range(len(finalResults.index))
     with open('data.csv', 'wb'):
         finalResults.to_csv(r'~/Expredict/data/data.csv')
+
+    with open('data.json', 'w') as json_data:
+        json_string = json.dumps(json_posts, sort_keys=True, indent=4)
+        json_data.write(json_string)
