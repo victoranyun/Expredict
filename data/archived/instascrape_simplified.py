@@ -1,7 +1,6 @@
 import json
 import time
 from urllib.request import urlopen
-
 import numpy as np
 import pandas as pd
 from bs4 import BeautifulSoup as bs
@@ -33,7 +32,7 @@ def source_to_json(source_html):
 
 
 wd = webdriver.Chrome()
-users_file = open('usernames.txt', 'r')
+users_file = open('../usernames.txt', 'r')
 usernames = users_file.read().split('\n')
 
 json_object = {}
