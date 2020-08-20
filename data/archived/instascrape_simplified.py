@@ -7,7 +7,7 @@ import pandas as pd
 from bs4 import BeautifulSoup as bs
 from selenium import webdriver
 
-PATH = '~/Expredict/data/'
+PATH = '~/Expredict/data/archived'
 
 
 def scroll(driver, t):
@@ -44,7 +44,7 @@ for i, username in enumerate(usernames):
     full_url = insta_url + '/' + username
     wd.get(full_url)
 
-    scroll(wd, 1.5)
+    scroll(wd, 3.5)
 
     media_links = []
     source = wd.page_source
@@ -102,3 +102,5 @@ for i, username in enumerate(usernames):
     with open('data.json', 'w') as json_data:
         json_string = json.dumps(json_posts, sort_keys=True, indent=4)
         json_data.write(json_string)
+
+    wd.close()

@@ -3,10 +3,9 @@ import requests
 import json
 import numpy as np
 
-directory = "../img/"
 
-
-def download(username):
+def download():
+    directory = "../img/"
     with open('../data/data.json') as json_file:
         data = json.load(json_file)
         for i in data['wittytumblrs']:
@@ -15,7 +14,7 @@ def download(username):
                 file.write(r.content)
 
 
-def likes(username):
+def likes():
     likes_arr = []
     with open('../data/data.json') as json_file:
         data = json.load(json_file)
