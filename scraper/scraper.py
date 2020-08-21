@@ -53,7 +53,7 @@ def get_media_urls():
         except TypeError:
             np.nan
 
-    with open('data.json', 'w') as json_data:
+    with open('../data/data.json', 'w') as json_data:
         json_string = json.dumps(json_posts, sort_keys=True, indent=4)
         json_data.write(json_string)
 
