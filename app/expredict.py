@@ -44,8 +44,9 @@ callbacks = myCallback()
 
 # print(x_train)
 model = tf.keras.models.Sequential([
-    tf.keras.layers.Conv2D(10, (5, 5), activation='relu', input_shape=(128, 128, 3)),
-    tf.keras.layers.Conv2D(20, (5, 5), activation='relu'),
+    tf.keras.layers.Conv2D(64, (5, 5), activation='relu', input_shape=(128, 128, 3)),
+    tf.keras.layers.MaxPooling2D(3, 3),
+    tf.keras.layers.Conv2D(128, (5, 5), activation='relu'),
     tf.keras.layers.MaxPooling2D(3, 3),
     tf.keras.layers.Dropout(0.1),
     tf.keras.layers.Flatten(),
