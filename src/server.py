@@ -3,13 +3,7 @@ import os
 
 PATH = '../uploads'
 
-access_rights = 0o755
-try:
-    os.mkdir(PATH, access_rights)
-except OSError:
-    print("Failed to create directory %s due to duplicate dir or permissions" % PATH)
-else:
-    print("Successfully created the directory %s" % PATH)
+ACCESS_RIGHTS = 0o755
 
 app = Flask(__name__)
 
@@ -18,13 +12,21 @@ app = Flask(__name__)
 def index_page():
     return '''
     <!doctype html>
+    <html>
+    <center>
     <title>Upload to Model</title>
     <h2>Upload File</h2>
     <form method=post enctype=multipart/form-data>
     <p><input type=file name=file accept=image/* multiple>
     <input type=submit value=Upload>
     </form>
+    </center>
+    </html>
     '''
 
 
-app.run(port=1337, host='0.0.0.0')
+if __name__ == '__main__':
+    if not os.path.exists(PATH):
+        os.makedirs(PATH)
+
+    app.run(port=1337, host='127.0.0.1')
