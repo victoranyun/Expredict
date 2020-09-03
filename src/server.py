@@ -1,5 +1,6 @@
-from flask import Flask
+from flask import Flask, request
 import os
+from util import file_upload
 
 PATH = '../uploads'
 
@@ -17,7 +18,7 @@ def index_page():
     <title>Upload to Model</title>
     <h2>Upload File</h2>
     <form method=post enctype=multipart/form-data>
-    <p><input type=file name=file accept=image/* multiple>
+    <p><input type=file name=filename accept=image/* multiple>
     <input type=submit value=Upload>
     </form>
     </center>
@@ -25,8 +26,13 @@ def index_page():
     '''
 
 
+@app.route('/', methods=['POST'])
+def run():
+    file_upload(request, PATH)
+
+
 if __name__ == '__main__':
     if not os.path.exists(PATH):
-        os.makedirs(PATH)
+        os.makedirs(PATH, ACCESS_RIGHTS)
 
     app.run(port=1337, host='127.0.0.1')
