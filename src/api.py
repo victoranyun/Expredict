@@ -18,8 +18,3 @@ def resize(file_paths):
 
 def run_prediction(images):
     model = load_model("../model/model.h")
-    global default_graph
-    with default_graph.as_default():
-        prediction = model.predict(images)
-        sorted_desc = np.argsort(prediction.flatten() * -1)
-        return sorted_desc
