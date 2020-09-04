@@ -61,4 +61,4 @@ print(model.summary())
 model.fit(x_train, y_train, epochs=10, callbacks=[callbacks], validation_data=(x_test, y_test), shuffle=True)
 print(model.evaluate(x_test, y_test))
 
-model.save('../model/model1.h')
+model.save('../model/model.h')
