@@ -28,7 +28,7 @@ def index_page():
 
 @app.route('/', methods=['POST'])
 def run():
-    file_upload(request, PATH)
+    file_path = file_upload(request, PATH)
 
 
 if __name__ == '__main__':
