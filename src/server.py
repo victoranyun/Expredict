@@ -1,7 +1,6 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request
 import os
 from util import file_upload
-from api import resize, run_prediction
 
 PATH = '../uploads'
 
@@ -13,6 +12,7 @@ app = Flask(__name__)
 @app.route('/', methods=['GET'])
 def index_page():
     return '''
+    <!doctype html>
     <html>
     <center>
     <title>Upload to Model</title>
@@ -29,10 +29,6 @@ def index_page():
 @app.route('/', methods=['POST'])
 def run():
     file_path = file_upload(request, PATH)
-
-    predicted = run_prediction(resize(file_path))
-
-    return jsonify({'Prediction': predicted.tolist()})
 
 
 if __name__ == '__main__':

@@ -1,3 +1,4 @@
+import os
 import requests
 import json
 import numpy as np
@@ -5,7 +6,7 @@ import numpy as np
 
 def download():
     directory = "../img/"
-    users_file = open('../scraper/usernames.txt', 'r')
+    users_file = open('../data/usernames.txt', 'r')
     username = users_file.read()
     with open('../data/data.json') as json_file:
         data = json.load(json_file)
@@ -17,7 +18,7 @@ def download():
 
 def likes():
     likes_arr = []
-    users_file = open('../scraper/usernames.txt', 'r')
+    users_file = open('../data/usernames.txt', 'r')
     username = users_file.read()
     with open('../data/data.json') as json_file:
         data = json.load(json_file)
