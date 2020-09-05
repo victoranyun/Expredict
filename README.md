@@ -1,5 +1,5 @@
 <div align = "center">
-<img src = "https://i.imgur.com/7erFzg8.png" with="400" height="400"/>
+<img src = "https://i.imgur.com/8eK8s8Z.png" with="400" height="400"/>
 </div>
 
 ## Expredict
