@@ -1,6 +1,8 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 import os
 from util import file_upload
+from creds import get_credentials, call_api
+from get_long_lived_token import get_access_token
 
 PATH = '../uploads'
 
@@ -29,6 +31,22 @@ def index_page():
 @app.route('/', methods=['POST'])
 def run():
     file_path = file_upload(request, PATH)
+
+
+@app.route('/auth/instagram', methods=['GET'])
+def access():
+    cred = get_credentials()
+    res = get_access_token(cred)
+
+    return jsonify(res['json_data']['access_token'])
+
+
+@app.route('/instagram/<username>', methods=['GET'])
+def get_data(username):
+    cred = get_credentials()
+    res = get_access_token(cred)
+
+    return jsonify(res['json_data']['business_discovery'])
 
 
 if __name__ == '__main__':
