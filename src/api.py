@@ -1,9 +1,13 @@
 import tensorflow as tf
 import numpy as np
-from tensorflow.keras.models import load_model
 import cv2
+from PIL import Image
 
-default_graph = tf.Graph()
+new_model = tf.keras.models.load_model('../model/model1.h')
+
+print(new_model.summary())
+
+global graph
 
 
 def resize(file_paths):
@@ -17,4 +21,25 @@ def resize(file_paths):
 
 
 def run_prediction(images):
-    model = load_model("../model/model.h")
+    images = images / 255.0
+    prediction = new_model.predict(images)
+    sorted_np = np.argsort(prediction.flatten() * -1)
+    return sorted_np
+
+
+def find_max(predictions):
+    first_max = max(predictions)
+    for i in predictions:
+        if first_max == predictions[i]:
+            return i
+
+
+def display_image(np_array):
+    w, h = 128, 128
+    data = np.zeros((h, w, 3), dtype=np.uint8)
+    data[0:256, 0:256] = [255, 0, 0]
+    img = Image.fromarray(np_array, 'RGB')
+    img.save('best_image.png')
+    img.show()
+
+

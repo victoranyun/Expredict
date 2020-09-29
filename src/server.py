@@ -3,6 +3,7 @@ import os
 from util import file_upload
 from creds import get_credentials, call_api
 from get_long_lived_token import get_access_token
+from api import resize, run_prediction, find_max, display_image
 
 PATH = '../uploads'
 
@@ -31,6 +32,11 @@ def index_page():
 @app.route('/', methods=['POST'])
 def run():
     file_path = file_upload(request, PATH)
+    parse_to_np = resize(file_path)
+    result = run_prediction(parse_to_np)
+    maximum_index = find_max(result)
+    display_image(parse_to_np[maximum_index])
+    return jsonify({'Expredicted': result.tolist()})
 
 
 @app.route('/auth/instagram', methods=['GET'])

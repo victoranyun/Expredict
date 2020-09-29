@@ -24,5 +24,5 @@ def get_access_token(cred):
 cred = get_credentials()
 res = get_access_token(cred)
 
-print(res['json_data']['access_token'])
+# print(res['json_data']['access_token'])
 

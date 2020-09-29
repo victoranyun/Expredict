@@ -3,16 +3,16 @@ import numpy as np
 import keras
 import cv2
 import glob
-from helper import download, likes
+from helper import likes
 import matplotlib.pyplot as plt
 
-DESIRED_ACCURACY = 0.80
+DESIRED_ACCURACY = 0.999
 
 
 class myCallback(tf.keras.callbacks.Callback):
     def on_epoch_end(self, epoch, logs={}):
         if logs.get('loss') is not None and logs.get('loss') <= DESIRED_ACCURACY:
-            print("\nReached 65% accuracy so cancelling training!")
+            print("\nReached 99.9% accuracy so cancelling training!")
             self.model.stop_training = True
 
 
@@ -51,14 +51,14 @@ model = tf.keras.models.Sequential([
     tf.keras.layers.Dropout(0.1),
     tf.keras.layers.Flatten(),
     tf.keras.layers.Dense(25, activation='relu'),
-    tf.keras.layers.Dense(1, activation='softmax')
+    tf.keras.layers.Dense(1, activation='linear')
 ])
 
-model.compile(optimizer='rmsprop', loss='mean_squared_logarithmic_error')
+
+model.compile(optimizer='rmsprop', loss='mse')
 
 print(model.summary())
 
 model.fit(x_train, y_train, epochs=10, callbacks=[callbacks], validation_data=(x_test, y_test), shuffle=True)
 print(model.evaluate(x_test, y_test))
-
 model.save('../model/model1.h')
