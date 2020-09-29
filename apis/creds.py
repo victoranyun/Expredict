@@ -4,9 +4,9 @@ import json
 
 def get_credentials():
     credentials = dict()
-    credentials['access_token'] = 'EAAnqNm9ZAVc8BALOHTKOTpypn22fZCX59NyPZCgmXYADH8S1ZBIOhygENLYsTukUcCvtGaDAZAUA2VmcyZCgzbGbBuNPj28C9eAZCRutIZAmqISVQFS6ILdO2vG1s6WgCCKcSjaZBJfBqyHJb1lRN8tXdd0M76JxnSetZChfjmkdKjXZAXVPzGDax7giu8Bwj8dHtZA7mbvt3YXx5AZDZD'
-    credentials['client_id'] = '2790794307655119'
-    credentials['client_secret'] = '96d6b480bae2ff4cdfe9ec15ef82a8ae'
+    credentials['access_token'] = ''
+    credentials['client_id'] = ''
+    credentials['client_secret'] = ''
     credentials['graph_domain'] = 'https://graph.facebook.com/'
     credentials['graph_version'] = 'v7.0'
     credentials['username'] = ''
