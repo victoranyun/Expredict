@@ -4,6 +4,8 @@ from util import file_upload
 from creds import get_credentials, call_api
 from get_long_lived_token import get_access_token
 from api import resize, run_prediction, find_max, display_image
+from discovery_api import get_instagram_metadata
+from get_id import get_facebook_pages
 
 PATH = '../uploads'
 
@@ -44,15 +46,26 @@ def access():
     cred = get_credentials()
     res = get_access_token(cred)
 
-    return jsonify(res['json_data']['access_token'])
+    return jsonify(res['json_data'])
+
+
+@app.route('/instagram/lookup/id', methods=['GET'])
+def get_id():
+    cred = get_credentials()
+    res_for_id = get_facebook_pages(cred)
+    ig_id = res_for_id['json_data']['instagram_business_account']['id']
+    cred['ig_id'] = ig_id
+    return ig_id
 
 
 @app.route('/instagram/<username>', methods=['GET'])
 def get_data(username):
     cred = get_credentials()
-    res = get_access_token(cred)
-
-    return jsonify(res['json_data']['business_discovery'])
+    res_for_id = get_facebook_pages(cred)
+    ig_id = res_for_id['json_data']['instagram_business_account']['id']
+    cred['ig_id'] = ig_id
+    cred['username'] = username
+    return jsonify(get_instagram_metadata(cred)['json_data']['business_discovery'])
 
 
 if __name__ == '__main__':
