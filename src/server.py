@@ -1,17 +1,22 @@
 from flask import Flask, request, jsonify
 import os
 from util import file_upload
-from creds import get_credentials, call_api
+from creds import get_credentials
 from get_long_lived_token import get_access_token
 from api import resize, run_prediction, find_max, display_image
 from discovery_api import get_instagram_metadata
 from get_id import get_facebook_pages
+from flask_sqlalchemy import SQLAlchemy
 
 PATH = '../uploads'
 
 ACCESS_RIGHTS = 0o755
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://victory:victory@localhost:5432/expredict"
+db = SQLAlchemy(app)
+
+from models import Instagram
 
 
 @app.route('/', methods=['GET'])
@@ -41,12 +46,24 @@ def run():
     return jsonify({'Expredicted': result.tolist()})
 
 
-@app.route('/auth/instagram', methods=['GET'])
+@app.route('/auth/instagram')
 def access():
     cred = get_credentials()
     res = get_access_token(cred)
-
-    return jsonify(res['json_data'])
+    access_token = res['json_data']
+    # print(access_token['access_token'])
+    try:
+        account = Instagram(
+            username='funmblr',
+            access_token=access_token['access_token'],
+            page_id='123',
+            instagram_id='123'
+        )
+        db.session.add(account)
+        db.session.commit()
+        return jsonify(res['json_data'])
+    except Exception as e:
+        return str(e)
 
 
 @app.route('/instagram/lookup/id', methods=['GET'])
@@ -72,4 +89,4 @@ if __name__ == '__main__':
     if not os.path.exists(PATH):
         os.makedirs(PATH, ACCESS_RIGHTS)
 
-    app.run(port=1337, host='127.0.0.1')
+    app.run(ssl_context='adhoc', port='1337', debug=False)
