@@ -35,4 +35,3 @@ def call_api(url, endpoint_params):
 def print_data(response):
     print(response['json_data_pretty'])
     return
-
