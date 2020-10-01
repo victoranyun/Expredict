@@ -1,10 +1,9 @@
 from flask import Flask, request, jsonify
 import os
 from util import file_upload
-from creds import get_credentials
+from creds import get_credentials, call_api
 from get_long_lived_token import get_access_token
 from api import resize, run_prediction, find_max, display_image
-from discovery_api import get_instagram_metadata
 from get_id import get_facebook_pages
 from flask_sqlalchemy import SQLAlchemy
 
@@ -21,6 +20,10 @@ from models import Instagram
 
 @app.route('/', methods=['GET'])
 def index_page():
+    """
+    Index page for uploading a bunch of pictures
+    :return: the view of the page
+    """
     return '''
     <!doctype html>
     <html>
@@ -38,6 +41,10 @@ def index_page():
 
 @app.route('/', methods=['POST'])
 def run():
+    """
+    Prints Expredicted array of predictions from the model
+    :return: view
+    """
     file_path = file_upload(request, PATH)
     parse_to_np = resize(file_path)
     result = run_prediction(parse_to_np)
@@ -48,16 +55,23 @@ def run():
 
 @app.route('/auth/instagram')
 def access():
+    """
+    Using the basic credentials, stores in PostgreSQL, gets useful data and "authenticates"
+    :return: access token + bearer
+    """
     cred = get_credentials()
     res = get_access_token(cred)
     access_token = res['json_data']
-    # print(access_token['access_token'])
+
+    res_for_id = get_facebook_pages(cred)
+    ig_id = res_for_id[1]['json_data']['instagram_business_account']['id']
+    account_username = res_for_id[0]
+
     try:
         account = Instagram(
-            username='funmblr',
+            username=account_username,
             access_token=access_token['access_token'],
-            page_id='123',
-            instagram_id='123'
+            instagram_id=ig_id
         )
         db.session.add(account)
         db.session.commit()
@@ -66,27 +80,45 @@ def access():
         return str(e)
 
 
-@app.route('/instagram/lookup/id', methods=['GET'])
-def get_id():
-    cred = get_credentials()
-    res_for_id = get_facebook_pages(cred)
-    ig_id = res_for_id['json_data']['instagram_business_account']['id']
-    cred['ig_id'] = ig_id
-    return ig_id
+@app.route('/instagram/lookup/<user_id>', methods=['GET'])
+def get_info(user_id):
+    """
+    Perform query of lookup by primary id
+    :param user_id: primary id
+    :return: username, access_token, and instagram_id of said id
+    """
+    try:
+        account = Instagram.query.get_or_404(user_id)
+        response = {
+            "username": account.username,
+            "access_token": account.access_token,
+            "instagram_id": account.instagram_id
+        }
+        return "username: " + response['username'] + " access_token: " + response['access_token'] + " instagram_id: " + \
+               response['instagram_id']
+    except Exception as e:
+        return str(e)
 
 
 @app.route('/instagram/<username>', methods=['GET'])
 def get_data(username):
-    cred = get_credentials()
-    res_for_id = get_facebook_pages(cred)
-    ig_id = res_for_id['json_data']['instagram_business_account']['id']
-    cred['ig_id'] = ig_id
-    cred['username'] = username
-    return jsonify(get_instagram_metadata(cred)['json_data']['business_discovery'])
+    """
+    Queries any business/creator account using Instagram's new API and shows their metadata
+    :param username: the username to query
+    :return: the info: username,name,profile_picture_url,biography,follows_count,followers_count,media_count
+    """
+    parameters = dict()
+    account = Instagram.query.first()
+    parameters['access_token'] = account.access_token
+    url = "https://graph.facebook.com/" + account.instagram_id + '?fields=business_discovery.username(' + \
+          username + '){username,name,profile_picture_url,biography,follows_count,followers_count,media_count}'
+    response = call_api(url, parameters)
+    return jsonify(response['json_data']['business_discovery'])
 
 
 if __name__ == '__main__':
     if not os.path.exists(PATH):
         os.makedirs(PATH, ACCESS_RIGHTS)
 
-    app.run(ssl_context='adhoc', port='1337', debug=False)
+    app.run(ssl_context='adhoc', port='5000', debug=False)
+

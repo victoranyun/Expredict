@@ -2,6 +2,12 @@ import os
 
 
 def file_upload(req, folder):
+    """
+    Uploads multiple files and saves it to a folder on local disk
+    :param req:
+    :param folder:
+    :return:
+    """
     image_list = req.files.getlist("filename")
     full_file_paths = []
     for image in image_list:
@@ -16,3 +22,4 @@ def file_upload(req, folder):
 def delete_images(full_file_paths):
     for image in full_file_paths:
         os.remove(image)
+

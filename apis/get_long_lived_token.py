@@ -10,7 +10,7 @@ def get_access_token(cred):
         client_secret={app-secret}&
         fb_exchange_token={your-access-token}"
     :param cred: Endpoint parameters
-    :return: Data from endpoint
+    :return: Response from endpoint (long lived token 30 days)
     """
     parameters = dict()
     parameters['grant_type'] = 'fb_exchange_token'
@@ -20,9 +20,4 @@ def get_access_token(cred):
     url = cred['endpoint_base'] + 'oauth/access_token'
     return call_api(url, parameters)
 
-
-cred = get_credentials()
-res = get_access_token(cred)
-
-# print(res['json_data']['access_token'])
 

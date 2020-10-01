@@ -1,13 +1,14 @@
 import json
-import time
-from urllib.request import urlopen
 import numpy as np
 import pandas as pd
-from bs4 import BeautifulSoup as bs
 import requests
 
 
 def get_media_urls():
+    """
+    Gets all media URLs on a specified username in username.txt
+    :return:
+    """
     users_file = open('usernames.txt', 'r')
     usernames = users_file.read().split('\n')
     final_results = pd.DataFrame()

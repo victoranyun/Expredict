@@ -1,28 +1,25 @@
 from server import db
 
 
-class Instagram(db.Model):
-    __tablename__ = 'instagram_info'
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String())
-    access_token = db.Column(db.String())
-    page_id = db.Column(db.String())
-    instagram_id = db.Column(db.String())
+class Instagram(db.Model):  # model for each instagram account
+    __tablename__ = 'instagram_info'  # name of the table
+    id = db.Column(db.Integer, primary_key=True)  # primary key of db (required)
+    username = db.Column(db.String())  # instagram username
+    access_token = db.Column(db.String())  # access token of the app
+    instagram_id = db.Column(db.String())  # instagram user id
 
-    def __init__(self, username, access_token, page_id, instagram_id):
+    def __init__(self, username, access_token, instagram_id):
         self.username = username
         self.access_token = access_token
-        self.page_id = page_id
         self.instagram_id = instagram_id
 
-    def __repr__(self):
+    def __repr__(self):  # can return a printable representation of the object
         return '<id {}>'.format(self.id)
 
-    def serialize(self):
+    def serialize(self):  # not needed but conventional
         return {
             'id': self.id,
             'username': self.username,
             'access_token': self.access_token,
-            'page_id': self.page_id,
             'instagram_id': self.instagram_id
         }
