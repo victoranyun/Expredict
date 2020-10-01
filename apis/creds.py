@@ -8,9 +8,9 @@ def get_credentials():
     :return: dictionary with the required fields
     """
     credentials = dict()
-    credentials['access_token'] = 'EAAJ8AMvFSQ0BAC3K8PAtJsINXZATsjyDzqONSFFwuOggVpzsSBD4UyATXEcZAhXQzj7f3tZAVh8tMZApWWdeF7KDtt8lc5J0gwr5yey8jX6wl9XUZAD48LMbxWyfJK9v4VbOpKdsae68cfi9kBth9AuZCN9RZAWZCrgStxHoy3XfWQZDZD'
-    credentials['client_id'] = '699292813969677'
-    credentials['client_secret'] = '88397a979fdf0df08490d4ed7dc76cde'
+    credentials['access_token'] = ''
+    credentials['client_id'] = ''
+    credentials['client_secret'] = ''
     credentials['graph_domain'] = 'https://graph.facebook.com/'
     credentials['graph_version'] = 'v7.0'
     credentials['username'] = ''
