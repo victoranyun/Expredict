@@ -17,11 +17,8 @@ def resize(file_paths):
     :return: np array of resized images
     """
     image_list = []
-
     for image in file_paths:
-        resized = cv2.resize(cv2.imread(image), (128, 128))
-        image_list.append(resized)
-
+        image_list.append(cv2.resize(cv2.imread(image), (128, 128)))
     return np.array(image_list)
 
 
@@ -33,7 +30,7 @@ def run_prediction(images):
     """
     images = images / 255.0
     prediction = new_model.predict(images)
-    sorted_np = np.argsort(prediction.flatten() * -1)  # sorting the array and collapsing into 1d
+    sorted_np = np.argsort(prediction.flatten() * -1, kind='quicksort')  # sorting the array and collapsing into 1d
     return sorted_np
 
 

@@ -42,8 +42,8 @@ def get_media_urls():
                         # print(shortcode_display_url_and_likes)
                         arr.append(shortcode_display_url_and_likes)
 
-                    p = pd.DataFrame.from_dict(pd.json_normalize(shortcode_display_url_and_likes), orient='columns')
-                    final_results = final_results.append(p)
+                    # p = pd.DataFrame.from_dict(pd.json_normalize(shortcode_display_url_and_likes), orient='columns')
+                    # final_results = final_results.append(p)
                     json_posts = {username: arr}
                 page_info = query_json_object['data']['user']['edge_owner_to_timeline_media']['page_info']
                 has_next_page = page_info['has_next_page']
@@ -54,7 +54,7 @@ def get_media_urls():
         except TypeError:
             np.nan
 
-    with open('../data/data.json', 'w') as json_data:
+    with open('../data/data2.json', 'w') as json_data:
         json_string = json.dumps(json_posts, sort_keys=True, indent=4)
         json_data.write(json_string)
 

@@ -6,6 +6,7 @@ from get_long_lived_token import get_access_token
 from api import resize, run_prediction, find_max, display_image
 from get_id import get_facebook_pages
 from flask_sqlalchemy import SQLAlchemy
+from flask import render_template
 
 PATH = '../uploads'
 
@@ -19,24 +20,12 @@ from models import Instagram
 
 
 @app.route('/', methods=['GET'])
-def index_page():
+def index_page(name=None):
     """
     Index page for uploading a bunch of pictures
     :return: the view of the page
     """
-    return '''
-    <!doctype html>
-    <html>
-    <center>
-    <title>Upload to Model</title>
-    <h2>Upload File</h2>
-    <form method=post enctype=multipart/form-data>
-    <p><input type=file name=filename accept=image/* multiple>
-    <input type=submit value=Upload>
-    </form>
-    </center>
-    </html>
-    '''
+    return render_template("index.html", name=name)
 
 
 @app.route('/', methods=['POST'])
