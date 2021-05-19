@@ -1,0 +1,63 @@
+<!doctype html>
+    <html lang="en">
+      <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>Expredict</title>
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+        integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+
+        <link href="{{ url_for('static', filename='index.css') }}" rel="stylesheet">
+      </head>
+
+      <body>
+
+        <div class="site-wrapper">
+
+          <div class="site-wrapper-inner">
+
+            <div class="cover-container">
+
+              <div class="masthead clearfix">
+                <div class="inner">
+                  <h3 class="masthead-brand">Expredict</h3>
+                  <nav>
+                    <ul class="nav masthead-nav">
+                      <li class="active"><a href="#">Home</a></li>
+                      <li><a href="#">Features</a></li>
+                      <li><a href="#">Contact</a></li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+
+              <div class="inner cover">
+                <h1 class="cover-heading">Grow your influence.</h1>
+                <p class="lead">Expredict is a machine learning model that identifies the best-performing post
+                    out of N number of posts uploaded using the upload button below.</p>
+                <p class="lead">
+                    <center>
+                        <form method=post enctype=multipart/form-data>
+                        <p><input type=file name=filename accept=image/* class="btn btn-lg btn-default" multiple />
+                        <br>
+                        <input type=submit value=Upload class="btn btn-default" />
+                        </form>
+                    </center>
+                </p>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+        <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+        <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+      </body>
+    </html>

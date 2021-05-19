@@ -1,6 +1,5 @@
 import json
 import numpy as np
-import pandas as pd
 import requests
 
 
@@ -11,7 +10,6 @@ def get_media_urls():
     """
     users_file = open('usernames.txt', 'r')
     usernames = users_file.read().split('\n')
-    final_results = pd.DataFrame()
     arr = []
     for i, username in enumerate(usernames):
         try:
@@ -20,10 +18,8 @@ def get_media_urls():
             response = requests.get(insta_url)
             raw = response.content
             json_object = json.loads(raw)
-            # timeline_media = json_object['graphql']['user']['edge_owner_to_timeline_media']
             user_id = json_object['graphql']['user']['id']
             end_cursor = ''
-            has_next_page = ''
             json_posts = {}
             while True:
                 query_url = 'https://instagram.com/graphql/query/' \
@@ -39,11 +35,8 @@ def get_media_urls():
                                                            'display_url': actual_display_url,
                                                            'likes_count':
                                                                media_edge['node']['edge_media_preview_like'].get('count')}
-                        # print(shortcode_display_url_and_likes)
                         arr.append(shortcode_display_url_and_likes)
 
-                    # p = pd.DataFrame.from_dict(pd.json_normalize(shortcode_display_url_and_likes), orient='columns')
-                    # final_results = final_results.append(p)
                     json_posts = {username: arr}
                 page_info = query_json_object['data']['user']['edge_owner_to_timeline_media']['page_info']
                 has_next_page = page_info['has_next_page']
@@ -54,9 +47,24 @@ def get_media_urls():
         except TypeError:
             np.nan
 
-    with open('../data/data2.json', 'w') as json_data:
+    with open('../data/data.json', 'w') as json_data:
         json_string = json.dumps(json_posts, sort_keys=True, indent=4)
         json_data.write(json_string)
+
+
+def download():
+    """
+    Helper functions to download the images according to the display_url from the scraper
+    :return: N/A
+    """
+    with open('../data/data.json') as json_file:
+        data = json.load(json_file)
+        users_file = open('usernames.txt', 'r')
+        usernames = users_file.read().split('\n')
+        for i in usernames:
+            r = requests[i['display_url']]
+            with open('../data/img/' + i['shortcode'] + '.jpg', 'wb') as file:
+                file.write(r.content)
 
 
 get_media_urls()
