@@ -11,7 +11,7 @@
 
 I created a machine learning model and web backend to identify social media trends (specifically on Instagram). <br> <br>
 I have found a lot of success with this model and application, successfully growing my account to 161K+ followers.
-Upload a set of images (more than 1), and the Python backend will display what image is predicted to work the best if you post it on social media. <br>
+Upload a set of images (more than 1), and the Python backend will display what image is predicted to work the best as a social media post. <br>
 
 <a name="tech"></a>
 ## 2. Technologies Used
